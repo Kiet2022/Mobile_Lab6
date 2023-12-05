@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from "react";
 
-import { SafeAreaView, Text, View, ScrollView, FlatList, TouchableOpacity } from 'react-native'
+import { SafeAreaView, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import { FAB } from "react-native-paper";
 
 

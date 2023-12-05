@@ -10,7 +10,6 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
 } from 'react-native';
-import { Add } from './api/agent';
 
 const AddSer_Page = () => {
     const [name, setName] = useState('');
@@ -50,7 +49,6 @@ const AddSer_Page = () => {
     }
 
     return (
-
         <View>
             <View style={{flex:2}}>
                 <KeyboardAvoidingView enabled>

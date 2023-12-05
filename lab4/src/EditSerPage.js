@@ -4,13 +4,9 @@ import {
     TextInput,
     View,
     Text,
-    ScrollView,
-    Image,
-    Keyboard,
     TouchableOpacity,
     KeyboardAvoidingView,
 } from 'react-native';
-import {  Update } from './api/agent';
 
 const EditSer_Page = () => {
     const [name, setName] = useState('');
