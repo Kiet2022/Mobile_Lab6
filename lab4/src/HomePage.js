@@ -1,14 +1,13 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from "react";
-
 import { SafeAreaView, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import { FAB } from "react-native-paper";
+import styles from './Style';
 
-
-const Home_Page = ({navigation}) => {
+const Home_Page = ({ navigation }) => {
     const [data, setData] = useState([])
     const filePath = 'https://kami-backend-5rs0.onrender.com/services'
-
+    //0373007856-123
     useEffect(() => {
         fetch(filePath)
             .then((response) => {
@@ -27,41 +26,36 @@ const Home_Page = ({navigation}) => {
     }, []);
 
 
-
-    const Item = ({ title }) => (
+    const Item = ({ item }) => (
         <View>
-        <TouchableOpacity  onPress={() => navigation.navigate('DetailService', { _id: title._id })}>
-            <Text >{title.name}</Text>
-            <Text >{title.price}</Text>
-        </TouchableOpacity>
-        </View>
-    );
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={{flexDirection: 'row'}}>
-                <Text >SERVICES</Text>
-                <FAB
-                    icon="plus"
-                    style={styles.fab}
-                    onPress={() => navigation.navigate('AddService')}
-                />
+            <TouchableOpacity style={styles.itembox} onPress={() => navigation.navigate('DetailService', {screen: 'Detail', params:{ _id: item._id }})}>
+                <Text style={styles.itemTitle}>{item.name}</Text>
+                <Text style={styles.itemPrice}>{item.price} VND</Text>
+            </TouchableOpacity>
             </View>
-            <FlatList
-                data={data}
-                renderItem={({ item }) => <Item title={item} />}
-                keyExtractor={item => item._id}
-            />
+    );
+    return (        
+        <SafeAreaView style={styles.container_main}>
+            <View style={styles.container_head}><Text style={styles.title}>Kami</Text></View>
+
+            <View style={styles.container_body}>
+                <View style={{flexDirection: 'row', flex:1}}>
+                    <Text style={styles.subtitle} >SERVICES</Text>
+                    <FAB
+                        style={styles.fab}
+                        label={'ADD'}
+                        onPress={() => navigation.navigate('AddService')}
+                    />
+                </View>
+                <View style={{flex:6}}>
+                <FlatList
+                    data={data}
+                    renderItem={({ item }) => <Item item={item} />}
+                    keyExtractor={item => item._id}
+                />
+                </View>
+            </View>
         </SafeAreaView>
-        // </ScrollView>
     );
 };
 export default Home_Page;
-
-const styles = StyleSheet.create({
-    fab: {
-      position: 'absolute',
-      margin: 16,
-      right: 0,
-      top: 0,
-    },
-})

@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
 import {
-    StyleSheet,
     TextInput,
     View,
     Text,
     TouchableOpacity,
     KeyboardAvoidingView,
+    Alert,
 } from 'react-native';
+import { useRoute } from "@react-navigation/native";
+import styles from './Style';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const EditSer_Page = () => {
+
+const EditSer_Page = ({navigation}) => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [errortext, setErrortext] = useState('');
 
 
     const route = useRoute();
-    const { _id } = route.params;
+    const { _id, nameSer, priceSer } = route.params;
 
 
     const handleSubmitPress = async () => {
@@ -49,13 +53,14 @@ const EditSer_Page = () => {
                 .then((d) => {
                     setData(d)
                     console.log("c: ", d)
-                    d.map((item) => {
-                        console.log(item);
-                    })
+          
                 })
                 .catch((error) => {
                     console.error('Error fetching data:', error);
-                });
+                }).finally(() =>
+                    navigation.navigate('DetailService', {screen: 'Detail', params:{ _id: _id }})
+                );
+                
         }
     }
 
@@ -70,7 +75,7 @@ const EditSer_Page = () => {
                             onChangeText={name =>
                                 setName(name)
                             }
-                            placeholder="Enter service name"
+                            value={nameSer}
                             onSubmitEditing={() =>
                                 passwordInputRef.current &&
                                 passwordInputRef.current.focus()
@@ -83,7 +88,7 @@ const EditSer_Page = () => {
                             onChangeText={(price) =>
                                 setPrice(price)
                             }
-                            placeholder="Enter price"
+                            value={priceSer}
                         />
                     </View>
                     {errortext != '' ? (
@@ -95,7 +100,13 @@ const EditSer_Page = () => {
                         style={styles.buttonStyle}
                         activeOpacity={0.5}
                         onPress={handleSubmitPress}>
-                        <Text style={styles.buttonTextStyle}>ADD</Text>
+                        <Text style={styles.buttonTextStyle}>UPDATE</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={styles.buttonStyle}
+                        activeOpacity={0.5}
+                        onPress={() => navigation.navigate('DetailService', {screen: 'Detail', params:{ _id: _id }})}>
+                        <Text style={styles.buttonTextStyle}>CANCEL</Text>
                     </TouchableOpacity>
                 </KeyboardAvoidingView>
             </View>
@@ -104,59 +115,3 @@ const EditSer_Page = () => {
 };
 export default EditSer_Page;
 
-const styles = StyleSheet.create({
-    mainBody: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#307ecc',
-        alignContent: 'center',
-    },
-    SectionStyle: {
-        flexDirection: 'row',
-        height: 40,
-        marginTop: 20,
-        marginLeft: 35,
-        marginRight: 35,
-        margin: 10,
-    },
-    buttonStyle: {
-        backgroundColor: '#7DE24E',
-        borderWidth: 0,
-        color: '#FFFFFF',
-        borderColor: '#7DE24E',
-        height: 40,
-        alignItems: 'center',
-        borderRadius: 30,
-        marginLeft: 35,
-        marginRight: 35,
-        marginTop: 20,
-        marginBottom: 25,
-    },
-    buttonTextStyle: {
-        color: '#FFFFFF',
-        paddingVertical: 10,
-        fontSize: 16,
-    },
-    inputStyle: {
-        flex: 1,
-        color: 'white',
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderWidth: 1,
-        borderRadius: 30,
-        borderColor: '#dadae8',
-    },
-    registerTextStyle: {
-        color: '#FFFFFF',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 14,
-        alignSelf: 'center',
-        padding: 10,
-    },
-    errorTextStyle: {
-        color: 'red',
-        textAlign: 'center',
-        fontSize: 14,
-    },
-});

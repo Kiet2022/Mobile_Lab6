@@ -8,6 +8,7 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styles from './Style';
 
 const Login_Page = ({navigation}) => {
     const [phone, setPhone] = useState('');
@@ -43,8 +44,8 @@ const Login_Page = ({navigation}) => {
     }
 
     return (
-        <View style={styles.mainBody}>
-            <View style={{flex: 1}}></View>
+        <View style={styles.container_main}>
+            <View style={{flex:1}}></View>
             <View style={{flex:2}}>
 
                 <KeyboardAvoidingView enabled>
@@ -81,8 +82,8 @@ const Login_Page = ({navigation}) => {
                     <TouchableOpacity
                         style={styles.buttonStyle}
                         activeOpacity={0.5}
-                        onPress={handleSubmitPress}
-                        /*onPress={() => navigation.navigate('HomeScreen')}*/
+                        //onPress={handleSubmitPress}
+                        onPress={() => navigation.navigate('HomeScreen')}
                         >
                         <Text style={styles.buttonTextStyle}>LOGIN</Text>
                     </TouchableOpacity>
@@ -94,63 +95,3 @@ const Login_Page = ({navigation}) => {
 };
 export default Login_Page;
 
-const styles = StyleSheet.create({
-    mainBody: {
-        flex: 1,
-        justifyContent: 'center',
-        alignContent: 'center',
-    },
-    SectionStyle: {
-        flexDirection: 'row',
-        height: 40,
-        marginTop: 20,
-        marginLeft: 35,
-        marginRight: 35,
-        margin: 10,
-    },
-    title:{
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        fontSize: 60,
-        color:'#7DE24E',
-        fontWeight: 'bold'
-    },
-    buttonStyle: {
-        backgroundColor: '#7DE24E',
-        borderWidth: 0,
-        color: '#FFFFFF',
-        borderColor: '#7DE24E',
-        height: 40,
-        alignItems: 'center',
-        borderRadius: 30,
-        marginLeft: 35,
-        marginRight: 35,
-        marginTop: 20,
-        marginBottom: 25,
-    },
-    buttonTextStyle: {
-        color: '#FFFFFF',
-        paddingVertical: 10,
-        fontSize: 16,
-    },
-    inputStyle: {
-        flex: 1,
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderWidth: 1,
-        borderRadius: 30,
-        borderColor: '#dadae8',
-    },
-    registerTextStyle: {
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 14,
-        alignSelf: 'center',
-        padding: 10,
-    },
-    errorTextStyle: {
-        color: 'red',
-        textAlign: 'center',
-        fontSize: 14,
-    },
-});

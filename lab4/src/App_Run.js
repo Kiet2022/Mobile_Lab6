@@ -16,6 +16,7 @@ import DetailTrans_Page from './DetailTrans';
 import Customers_Page from './Customers';
 import AddCus_Page from './AddCus';
 import Logout_Page from './LogoutPage';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,9 @@ function HomeScreens() {
             activeColor="#e91e63"
             labelStyle={{ fontSize: 12 }}
             style={{ backgroundColor: 'tomato' }}
+            screenOptions={{
+                headerShown: false
+            }}
         >
             <Stack.Screen
                 name="Home"
@@ -43,13 +47,16 @@ function HomeScreens() {
     )
 }
 
-function AppbarOptionScreen(){
+function AppbarOptionScreen() {
     return (
         <Stack.Navigator
             initialRouteName='AppbarOptionScreen'
             activeColor="#e91e63"
             labelStyle={{ fontSize: 12 }}
             style={{ backgroundColor: 'tomato' }}
+            screenOptions={{
+                headerShown: false
+            }}
         >
             <Stack.Screen
                 name='AppbarOption'
@@ -63,13 +70,16 @@ function AppbarOptionScreen(){
         </Stack.Navigator>
     )
 }
-function DetailScreen(){
+function DetailScreen() {
     return (
         <Stack.Navigator
             initialRouteName='DetailScreen'
             activeColor="#e91e63"
             labelStyle={{ fontSize: 12 }}
             style={{ backgroundColor: 'tomato' }}
+            screenOptions={{
+                headerShown: false
+            }}
         >
             <Stack.Screen
                 name='Detail'
@@ -79,50 +89,55 @@ function DetailScreen(){
                 name="AppbarScreen"
                 component={AppbarOptionScreen}
             />
-
         </Stack.Navigator>
     )
 }
 
-const TransactionsScreen =() =>{
+const TransactionsScreen = () => {
     return (
-    <Stack.Navigator
-        initialRouteName='TransactionsScreen'
-        activeColor="#e91e63"
-        labelStyle={{ fontSize: 12 }}
-        style={{ backgroundColor: 'tomato' }}
-    >
-        <Stack.Screen
-            name='TransactionList'
-            component={Transactions_Page}
-        />
-        <Stack.Screen
-            name="TransactionDetail"
-            component={DetailTrans_Page}
-        />
+        <Stack.Navigator
+            initialRouteName='TransactionsScreen'
+            activeColor="#e91e63"
+            labelStyle={{ fontSize: 12 }}
+            style={{ backgroundColor: 'tomato' }}
+            screenOptions={{
+                headerShown: false
+            }}
+            
+        >
+            <Stack.Screen
+                name='TransactionList'
+                component={Transactions_Page}
+            />
+            <Stack.Screen
+                name="TransactionDetail"
+                component={DetailTrans_Page}
+            />
 
-    </Stack.Navigator>
+        </Stack.Navigator>
     );
 }
 
-const CustomersScreen =() =>{
-    return(
+const CustomersScreen = () => {
+    return (
         <Stack.Navigator
-        initialRouteName='CustomersScreen'
-        activeColor="#e91e63"
-        labelStyle={{ fontSize: 12 }}
-        style={{ backgroundColor: 'tomato' }}
-    >
-        <Stack.Screen
-            name='CustomerList'
-            component={Customers_Page}
-        />
-        <Stack.Screen
-            name="AddCustomer"
-            component={AddCus_Page}
-        />
-
-    </Stack.Navigator>
+            initialRouteName='CustomersScreen'
+            activeColor="#e91e63"
+            labelStyle={{ fontSize: 12 }}
+            style={{ backgroundColor: 'tomato' }}
+            screenOptions={{
+                headerShown: false
+            }}
+        >
+            <Stack.Screen
+                name='CustomerList'
+                component={Customers_Page}
+            />
+            <Stack.Screen
+                name="AddCustomer"
+                component={AddCus_Page}
+            />
+        </Stack.Navigator>
     );
 }
 
@@ -133,31 +148,31 @@ function MyTabs() {
             initialRouteName='HomeScreen_Run'
             barStyle={{ backgroundColor: "blue" }}
         >
-            <Tab.Screen name="Home"
+            <Tab.Screen name="HomeTab"
                 component={Home_Page}
                 options={{
-                    tabBarIcon: 'home',
+                    tabBarIcon: 'account',
                 }}
             />
             <Tab.Screen
-                name="Transaction"
+                name="TransactionTab"
                 component={TransactionsScreen}
                 options={{
-                    tabBarIcon: 'money',
+                    tabBarIcon: 'account',
                 }}
             />
             <Tab.Screen
-                name="Customer"
+                name="CustomerTab"
                 component={CustomersScreen}
                 options={{
-                    tabBarIcon: 'user',
+                    tabBarIcon: 'account',
                 }}
             />
             <Tab.Screen
-                name="Setting"
+                name="SettingTab"
                 component={Logout_Page}
                 options={{
-                    tabBarIcon: 'setting',
+                    tabBarIcon: 'account',
                 }}
             />
         </Tab.Navigator>
@@ -165,25 +180,27 @@ function MyTabs() {
 }
 function App_Run() {
     return (
-        <Stack.Navigator
-            initialRouteName="AppScreen"
-            activeColor="#e91e63"
-            labelStyle={{ fontSize: 12 }}
-            style={{ backgroundColor: 'tomato' }}
-            screenOptions={{
-                headerShown: false
-            }}
-        >
-            <Stack.Screen
-                name='LoginScreen'
-                component={Login_Page}
-            />
-            <Stack.Screen
-                name="HomeScreen"
-                component={HomeScreens}
-            />
-        </Stack.Navigator>
+        <NavigationContainer>
+            <Stack.Navigator
+                initialRouteName="AppScreen"
+                activeColor="#e91e63"
+                labelStyle={{ fontSize: 12 }}
+                style={{ backgroundColor: 'tomato' }}
+                screenOptions={{
+                    headerShown: false
+                }}
+            >
+                <Stack.Screen
+                    name='LoginScreen'
+                    component={Login_Page}
+                />
+                <Stack.Screen
+                    name="HomeScreen"
+                    component={HomeScreens}
+                />
+            </Stack.Navigator>
+        </NavigationContainer>
     )
-} 
+}
 
 export default App_Run;

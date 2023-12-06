@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Appbar } from 'react-native-paper';
+import styles from './Style';
 
-
-const DetailTrans_Page = () => {
+const DetailTrans_Page = ({ navigation }) => {
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [price, setPrice] = useState(0);
@@ -47,70 +48,81 @@ const DetailTrans_Page = () => {
 
     return (
         <View>
-            <Text style={styles.itembox}>
+            <Appbar.Header>
+                <Appbar.Content title={' <   '} onPress={() => navigation.goBack()} />
+            </Appbar.Header>
+            <View style={styles.itembox}>
                 <View>
-                    <Text style={styles.sub}>General information</Text>
-                    <Text>Transaction code:<Text >{data.id}</Text></Text>
-                    <Text>Customer        :<Text>{data._id}</Text></Text>
-                    <Text>Created         :<Text>{data.createdAt}</Text></Text>
+                    <Text style={styles.subtitle}>General information</Text>
                 </View>
-            </Text>
+                <View style={styles.itemrow}>
+                    <Text style={styles.itemTitle}>Transaction code:</Text>
+                    <Text style={styles.itemValue}>{data.id}</Text>
+                </View>
+                <View style={styles.itemrow}>
+                    <Text style={styles.itemTitle}>Customer     :</Text>
+                    <Text style={styles.itemValue}>{data._id}</Text>
+                </View>
+                <View style={styles.itemrow}>
+                    <Text style={styles.itemTitle}>Created         :</Text>
+                    <Text style={styles.itemValue}>{data.createdAt}</Text>
+                </View>
+            </View>
 
-            <Text style={styles.itembox}>
+
+            <View style={styles.itembox}>
                 <View>
-                    <Text style={styles.sub}>Services list</Text>
+                    <Text style={styles.subtitle}>Services list</Text>
+                </View>
+
+                <View>
+
                     <View>
-                        {isLoading ? <Text>Loading...</Text> : data.services ? data.services.map((service, index) => (
-                            <Text key={index}>- {service.name} <Text>x{service.quantity}  <Text style={Styles.price}>{service.price}VND</Text></Text></Text>
-                        )) : null}
-                        <Text style={styles.content}>Customer:  {isLoading ? <Text>Waiting for loading data...</Text> : data.customer.name ? <Text>{data.customer.name}</Text> : null}</Text>
+                        {isLoading ?
+                            <Text>Waiting for loading data...</Text> :
+                            data.services ? data.services.map((service, index) => (
+                                <View style={styles.itemrow}>
+                                    <Text key={index}>- {service.name} </Text>
+                                    <Text> x{service.quantity}  </Text>
+                                    <Text style={styles.itemPrice}>{service.price} VND</Text>
+                                </View>
+                            )) : null}
                     </View>
-                    <Text>Total money    :<Text>{data.priceBeforePromotion}VND </Text></Text>
-                </View>
-            </Text>
 
-            <Text style={styles.itembox}>
-                <View>
-                    <Text style={styles.sub}>Cost</Text>
-                    <Text>Total      :<Text >{data.priceBeforePromotion}VND</Text></Text>
-                    <Text>Discount   :<Text>-{price - price_After_Discount}VND</Text></Text>
-                    <Text>Payment    :<Text>{data.createdAt}</Text></Text>
+                    <View style={styles.itemrow}>
+                        <Text style={styles.itemTitle}>Customer        :</Text>
+                        {isLoading ? <Text>Waiting for loading data...</Text> : data.customer.name ? <Text style={styles.itemValue}>{data.customer.name}</Text> : null}
+                    </View>
+
                 </View>
-            </Text>
+                <View style={styles.itemrow}>
+                    <Text style={styles.itemTitle}>Total money    :</Text>
+                    <Text style={styles.itemValue}>{data.priceBeforePromotion}VND </Text>
+                </View>
+            </View>
+
+
+            <View style={styles.itembox}>
+                <View >
+                    <Text style={styles.subtitle}>Cost</Text>
+                </View>
+                <View style={styles.itemrow}>
+                    <Text style={styles.itemTitle}>Total      :</Text>
+                    <Text style={styles.itemValue}>{data.priceBeforePromotion}VND</Text>
+                </View>
+                <View style={styles.itemrow}>
+                    <Text style={styles.itemTitle}>Discount   :</Text>
+                    <Text style={styles.itemPrice}>-{price - price_After_Discount}VND</Text>
+                </View>
+                <View style={styles.itemrow}>
+                    <Text style={styles.itemTitle}>Total Payment    :</Text>
+                    <Text style={styles.itemValue}>{data.createdAt}</Text>
+                </View>
+            </View>
+
 
         </View>
 
     )
 }
 export default DetailTrans_Page;
-
-const styles = StyleSheet.create({
-    fab: {
-      position: 'absolute',
-      margin: 16,
-      right: 0,
-      bottom: 0,
-    },
-    itembox:{
-        borderColor:AppTheme.colors.border,
-        borderWidth:1,
-        width:'100%',
-        marginTop:10,
-        borderRadius:15,
-        paddingLeft:10,
-    },
-    content:{
-        fontSize:16,
-        fontWeight:'bold',
-        textAlign: 'left',
-    },
-    price:{
-        fontSize:16,
-        textAlign:"right",      
-    },
-    sub:{
-        colors: 'red',
-        fontSize:20,
-        fontWeight:'bold',
-    }
-})

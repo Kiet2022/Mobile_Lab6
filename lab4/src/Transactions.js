@@ -1,9 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useState, useEffect } from 'react'
-import { Text, View, FlatList,TouchableOpacity } from 'react-native'
-import { FAB } from "react-native-paper";
+import { Text, View, FlatList, TouchableOpacity, SafeAreaView } from 'react-native'
 
-const Transactions_Page = ({navigation}) => {
+import styles from './Style';
+
+
+const Transactions_Page = ({ navigation }) => {
     const [data, SetData] = useState([])
     const fetchData = async () => {
         const value = await AsyncStorage.getItem('Token');
@@ -26,61 +28,42 @@ const Transactions_Page = ({navigation}) => {
     )
     const Item = ({ item }) => {
         return (
-            <Text style={styles.itembox}>                
-                <TouchableOpacity
-                onPress={() => navigation.navigate('TransactionDetail', {_id:item._id})}
-                >
-                    <Text style={styles.content}>{item.id}- {item.createdAt}</Text>
-                    <Text style={styles.price}>{item.price} VND</Text>
+
+            <TouchableOpacity style={styles.itembox}
+                onPress={() => navigation.navigate('TransactionDetail', { _id: item._id })}
+            >
+                <View style={{ padding: 5 }}>
+                    <Text style={styles.itemTitle}>{item.id}- {item.createdAt}</Text>
+
                     {item.services.map((service, index) => (
                         <Text key={index}>- {service.name}</Text>
                     ))}
-                    <Text style={styles.content}>Customer: {item.customer.name}</Text>
-                    </TouchableOpacity>               
-            </Text>
+                    <Text style={styles.itemTitle}>Customer: {item.customer.name}</Text>
+                    <View style={styles.itemrow}>
+                        <Text style={styles.itemTitle}>Total:</Text>
+                        <Text style={styles.itemPrice}>{item.price} VND</Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+
         )
     }
     return (
-        <View>
-            <FlatList
-                data={data}
-                keyExtractor={item => item._id}
-                renderItem={({ item }) => <Item item={item} />}
-            />
-            <FAB
-                icon="plus"
-                style={styles.fab}
-                onPress={() => navigation.navigate('AddService')}
-            />
-        </View>
+        <SafeAreaView style={styles.container_main}>
+
+            <View style={styles.container_head}><Text style={styles.title}>Kami</Text></View>
+            <View style={styles.container_body}>
+                <View style={styles.container_body}>
+                    <Text style={styles.subtitle} >TRANSACTIONS</Text>
+                    <FlatList
+                        data={data}
+                        keyExtractor={item => item._id}
+                        renderItem={({ item }) => <Item item={item} />}
+                    />
+                </View>
+            </View>
+        </SafeAreaView>
     )
 }
 
 export default Transactions_Page;
-
-
-const styles = StyleSheet.create({
-    fab: {
-      position: 'absolute',
-      margin: 16,
-      right: 0,
-      bottom: 0,
-    },
-    itembox:{
-        borderColor:AppTheme.colors.border,
-        borderWidth:1,
-        width:'100%',
-        marginTop:10,
-        borderRadius:15,
-        paddingLeft:10,
-    },
-    content:{
-        fontSize:16,
-        fontWeight:'bold',
-        textAlign: 'left',
-    },
-    price:{
-        fontSize:16,
-        textAlign:"right",      
-    },
-})
