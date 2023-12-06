@@ -7,19 +7,19 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
 } from 'react-native';
-import AsyncStorage from 'npm i @react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Login_Page = () => {
-    const [userEmail, setUserEmail] = useState('');
-    const [userPassword, setUserPassword] = useState('');
+const Login_Page = ({navigation}) => {
+    const [phone, setPhone] = useState('');
+    const [pass, setPass] = useState('');
     const [errortext, setErrortext] = useState('');
 
     const handleSubmitPress = async () => {
         setErrortext('');
-        if (!name) {
-            alert('Please fill name');
+        if (!phone) {
+            alert('Please fill email or phone');
             return;
-        } else if (!price) {
+        } else if (!pass) {
             alert('Please fill price');
             return;
         } else {
@@ -30,30 +30,32 @@ const Login_Page = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                phone: '0373007856',
-                password: '123'
+                phone: phone,
+                password: pass
             })}).then(response => response.json())
             .then(async data => {
                 console.log(data);
                 await AsyncStorage.setItem('token',data.token);
-                await navigation.navigate('Service');
+                await navigation.navigate('HomeScreen');
             }
             ).catch(error => console.error(error));
         }
     }
 
     return (
-        <View>
-            <View style={{flex: 1}}><Text>Kami Login</Text></View>
+        <View style={styles.mainBody}>
+            <View style={{flex: 1}}></View>
             <View style={{flex:2}}>
+
                 <KeyboardAvoidingView enabled>
+                    <Text style={styles.title}>KAMI</Text>
                     <View style={styles.SectionStyle}>
                         <TextInput
                             style={styles.inputStyle}
-                            onChangeText={email =>
-                                setUserEmail(email)
+                            onChangeText={phone =>
+                                setPhone(phone)
                             }
-                            placeholder="Enter Email"
+                            placeholder="Enter Email or Phone"
                             keyboardType="email-address"
                             onSubmitEditing={() =>
                                 passwordInputRef.current &&
@@ -65,7 +67,7 @@ const Login_Page = () => {
                         <TextInput
                             style={styles.inputStyle}
                             onChangeText={(pass) =>
-                                setUserPassword(pass)
+                                setPass(pass)
                             }
                             placeholder="Enter Password"
                             secureTextEntry={true}
@@ -79,14 +81,12 @@ const Login_Page = () => {
                     <TouchableOpacity
                         style={styles.buttonStyle}
                         activeOpacity={0.5}
-                        onPress={handleSubmitPress}>
+                        onPress={handleSubmitPress}
+                        /*onPress={() => navigation.navigate('HomeScreen')}*/
+                        >
                         <Text style={styles.buttonTextStyle}>LOGIN</Text>
                     </TouchableOpacity>
-                    <Text
-                        style={styles.registerTextStyle}
-                        onPress={() => navigation.navigate('RegisterScreen')}>
-                        New Here ? Register
-                    </Text>
+
                 </KeyboardAvoidingView>
             </View>
         </View>
@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
     mainBody: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#307ecc',
         alignContent: 'center',
     },
     SectionStyle: {
@@ -108,6 +107,13 @@ const styles = StyleSheet.create({
         marginLeft: 35,
         marginRight: 35,
         margin: 10,
+    },
+    title:{
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        fontSize: 60,
+        color:'#7DE24E',
+        fontWeight: 'bold'
     },
     buttonStyle: {
         backgroundColor: '#7DE24E',
@@ -129,7 +135,6 @@ const styles = StyleSheet.create({
     },
     inputStyle: {
         flex: 1,
-        color: 'white',
         paddingLeft: 15,
         paddingRight: 15,
         borderWidth: 1,
@@ -137,7 +142,6 @@ const styles = StyleSheet.create({
         borderColor: '#dadae8',
     },
     registerTextStyle: {
-        color: '#FFFFFF',
         textAlign: 'center',
         fontWeight: 'bold',
         fontSize: 14,
