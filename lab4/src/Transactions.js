@@ -3,10 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { Text, View, FlatList, TouchableOpacity, SafeAreaView } from 'react-native'
 
 import styles from './Style';
+import Loading from './LoadingScreen';
 
 
 const Transactions_Page = ({ navigation }) => {
     const [data, SetData] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+
     const fetchData = async () => {
         const value = await AsyncStorage.getItem('Token');
         console.log(value);
@@ -20,12 +23,13 @@ const Transactions_Page = ({ navigation }) => {
             .then((d) => {
                 SetData(d)
                 console.log(d)
+                setIsLoading(false);
             }).catch((error) => { console.error("Fetching error:", error) })
     }
-    useEffect(() => {
+    useEffect(  () => {
         fetchData();
-    }, []
-    )
+    }, [] )
+
     const Item = ({ item }) => {
         return (
 
@@ -53,13 +57,16 @@ const Transactions_Page = ({ navigation }) => {
 
             <View style={styles.container_head}><Text style={styles.title}>Kami</Text></View>
             <View style={styles.container_body}>
+
                 <View style={styles.container_body}>
                     <Text style={styles.subtitle} >TRANSACTIONS</Text>
+                    {isLoading? <Loading/>: 
                     <FlatList
                         data={data}
                         keyExtractor={item => item._id}
                         renderItem={({ item }) => <Item item={item} />}
                     />
+                     }
                 </View>
             </View>
         </SafeAreaView>

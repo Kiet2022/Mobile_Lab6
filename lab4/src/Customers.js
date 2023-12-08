@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import { View, Text, SafeAreaView, FlatList } from "react-native"
 import { FAB, Appbar } from "react-native-paper";
 import styles from "./Style";
+import Loading from "./LoadingScreen";
 
 const Customers_Page = ({ navigation }) => {
     const [data, setData] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
     const filePath = 'https://kami-backend-5rs0.onrender.com/customers';
 
     useEffect(() => {
@@ -19,6 +21,7 @@ const Customers_Page = ({ navigation }) => {
             .then((d) => {
                 console.log(d);
                 setData(d);
+                setIsLoading(false)
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -46,16 +49,21 @@ const Customers_Page = ({ navigation }) => {
             <View style={styles.container_head}><Text style={styles.title}>Kami</Text></View>
             <View style={styles.container_body}>
                 <Text style={styles.subtitle} >CUSTOMERS</Text>
-                <FlatList
-                    data={data}
-                    renderItem={({ item }) => <Item item={item} />}
-                    keyExtractor={item => item._id}
-                />
-                <FAB
-                    label="ADD"
-                    style={styles.fab}
-                    onPress={() => navigation.navigate('CustomerTab', { screen: 'AddCustomer' })}
-                />
+
+                {isLoading ? <Loading /> :
+                    <View>
+                        <FlatList
+                            data={data}
+                            renderItem={({ item }) => <Item item={item} />}
+                            keyExtractor={item => item._id}
+                        />
+                        <FAB
+                            label="ADD"
+                            style={styles.fab}
+                            onPress={() => navigation.navigate('CustomerTab', { screen: 'AddCustomer' })}
+                        />
+                    </View>
+                }
             </View>
         </SafeAreaView>
     );
